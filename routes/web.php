@@ -27,9 +27,11 @@ Route::get('/data', function () {
 });
 
 Route::get('users/list', [UserController::class, 'getUsers'])->name('users.list');
-Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+Route::get('register', [UserController::class, 'create'])->name('register');
 
-Route::post('register', [RegisteredUserController::class, 'store']);
-
+Route::post('register', [UserController::class, 'store']);
+Route::post('update/{id}', [UserController::class, 'update'])->name('update');
+Route::get('delete/user/{id}', [UserController::class, 'destroy']);
+Route::get('edit/user/{id}', [UserController::class, 'edit']);
 
 require __DIR__.'/auth.php';

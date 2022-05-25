@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use DataTables;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -40,22 +45,49 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/dashboard');
+        return redirect('/data');
     }
+
+    public function edit(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        return view('edit', compact('user'));
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => Rule::unique('users')->ignore($request->id),
+        ]);
+        $user = User::findOrFail($request->id);  
+        $user->update($request->all());
+
+        return redirect('/data');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect('/data');
+    }
+    
     public function getUsers(Request $request)
     {
-        $data = User::latest()->get();
+        $users = User::latest()->get();
         if($request->ajax()) {
             
-            return Datatables::of($data)
+            return Datatables::of($users)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                ->addColumn('action', function($user){
+                    $actionBtn = '<a href="http://localhost:8000/edit/user/'.$user->id .'" class="edit btn btn-success btn-sm">Edit</a> 
+                    <a href="http://localhost:8000/delete/user/'.$user->id .'" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;
                 })
                 ->rawColumns(['action'])
                 ->make(true); 
         }
-        return $data;
+        return $users;
     }
 }

@@ -27,7 +27,7 @@
             </table>
 
             <div class="mb-2">
-                <a href="javascript:void(0)" class="edit btn btn-success btn-sm">Create New User</a>
+                <a href="{{ route('register') }}" class="edit btn btn-success btn-sm">Create New User</a>
             </div>
     </div>
 </body>
