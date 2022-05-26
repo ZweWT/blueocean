@@ -26,6 +26,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -57,6 +58,7 @@ $(function () {
             {data: 'DT_RowIndex', name: 'id'},
             {data: 'name', name: 'name'},
             {data: 'email', name: 'email'},
+            {data: 'role', name: 'role'},
             {
                 data: 'action', 
                 name: 'action', 

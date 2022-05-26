@@ -15,6 +15,18 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
     /**
+     * Display the users list(index) view.
+     *
+     * @return \Illuminate\View\View
+    */
+
+    public function index()
+    {
+        return view('user');
+    }
+
+
+    /**
      * Display the registration view.
      *
      * @return \Illuminate\View\View
@@ -49,7 +61,7 @@ class UserController extends Controller
         ]);
         $user->assignRole($request->role);
 
-        return redirect('/data');
+        return redirect('/users');
     }
 
     /**
@@ -96,7 +108,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect('/data');
+        return redirect('/users');
     }
     
     public function getUsers(Request $request)
@@ -117,6 +129,10 @@ class UserController extends Controller
                     $actionBtn = '<a href="#" class="edit btn disabled btn-success btn-sm">Edit</a> 
                         <a href="#" class="delete btn disabled btn-danger btn-sm">Delete</a>';
                         return $actionBtn;
+                })
+                ->addColumn('role', function($user){
+                    $current_user = $user->getRoleNames();
+                    return $current_user[0];
                 })
                 ->rawColumns(['action'])
                 ->make(true); 

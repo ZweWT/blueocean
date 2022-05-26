@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
     {
         $user = \App\Models\User::factory()->create([
             'name' => 'blue ocean',
-            'email' => 'blueocean@example.com',
+            'email' => 'blueocean@gmail.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('blueocean@gmail.com')
         ]);
 
         $user->assignRole('admin'); 

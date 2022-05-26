@@ -12,17 +12,16 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/users', function () {
-    return view('user');
-})->name('users');
-
-Route::get('/users/list', [UserController::class, 'getUsers'])->name('users.list');
-Route::get('/register', [UserController::class, 'create'])->name('register');
-
-Route::post('/register', [UserController::class, 'store']);
-Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
-Route::get('/delete/user/{id}', [UserController::class, 'destroy']);
-Route::get('/edit/user/{id}', [UserController::class, 'edit']);
+Route::middleware('auth')->group(function() {
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/users', 'index')->name('users');
+        Route::get('/users/list', 'getUsers')->name('users.list');
+        Route::get('/register', 'create')->name('register');
+        Route::post('/register', 'store');
+        Route::post('/update/{id}', 'update')->name('update');
+        Route::get('/delete/user/{id}', 'destroy');
+        Route::get('/edit/user/{id}', 'edit');
+    });
+});
 
 require __DIR__.'/auth.php';
