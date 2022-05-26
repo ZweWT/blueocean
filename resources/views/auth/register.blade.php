@@ -39,6 +39,15 @@
                                 name="password_confirmation" required />
             </div>
 
+            <!----select roles--->
+            <div class="mt-3">
+                <x-label for="role" :value="__('Role')" />
+                <select id="role" name="role">
+                    @foreach ($roles as $role )
+                        <option value="{{ $role->id }}">{{ $role->name}} </option>    
+                    @endforeach
+                </select>
+            </div>
             <div class="flex items-center justify-end mt-4">
                 <x-button class="ml-4">
                     {{ __('Register') }}
