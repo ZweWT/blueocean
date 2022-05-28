@@ -137,13 +137,7 @@ class UserController extends Controller
                                             ';                       
                     }
                     return $actionBtn;
-                    
-
-
-                    // <button type="submit" class="delete btn btn-danger btn-sm"
-                    // onclick="return confirm(\'Are You Sure Want to Delete?\')"
-                    // >Delete</button>
-                    
+                            
                     // $actionBtn = '<a href="#" class="edit btn disabled btn-success btn-sm">Edit</a> 
                     //     <a href="#" class="delete btn disabled btn-danger btn-sm">Delete</a>';
                     //     return $actionBtn;
