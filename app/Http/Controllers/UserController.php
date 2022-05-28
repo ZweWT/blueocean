@@ -124,17 +124,24 @@ class UserController extends Controller
                     if($auth_user->can('edit users')){
                         $actionBtn = '
                                 <a href="'.route('edit', $user->id).'" class="edit btn btn-success btn-sm">Edit</a>';
+                    } else {
+                        $actionBtn = '
+                                <a href="#" class="edit btn btn-success btn-sm disabled">Edit</a>';
                     }
                     
                     if($auth_user->can('delete users') && $auth_user->id != $user->id){
                             $actionBtn .= '<form action="'.route('delete', $user->id).'" method="POST">
                                                 '.csrf_field().'
                                                 '.method_field("DELETE").'
-                                                <input class="btn btn-danger btn-sm" type="submit" value="Delete"
+                                                <input class="btn btn-danger btn-sm active" type="submit" value="Delete"
                                                 onclick="return confirm(\'Are You Sure Want to Delete?\')"
+                                                
                                                 >
                                             </form>
                                             ';                       
+                    } else {
+                        $actionBtn = '
+                        <a href="#" class="edit btn btn-success btn-sm disabled">Delete</a>';
                     }
                     return $actionBtn;
                             
