@@ -104,9 +104,9 @@ class UserController extends Controller
         return redirect('/users');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $user = User::findOrFail($id);
+        $user = User::findOrFail($request->id);
         $user->delete();
         return redirect('/users');
     }
@@ -120,15 +120,33 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($user){
                     $auth_user = Auth::user();
-                    if($auth_user->can('edit users') || $auth_user->can('delete users')){
-                        $actionBtn = '<a href="http://localhost:8000/edit/user/'.$user->id .'" class="edit btn btn-success btn-sm">Edit</a> 
-                        <a href="http://localhost:8000/delete/user/'.$user->id .'" class="delete btn btn-danger btn-sm">Delete</a>';
-                        return $actionBtn;
+                    $actionBtn = null;
+                    if($auth_user->can('edit users')){
+                        $actionBtn = '
+                                <a href="'.route('edit', $user->id).'" class="edit btn btn-success btn-sm">Edit</a>';
                     }
                     
-                    $actionBtn = '<a href="#" class="edit btn disabled btn-success btn-sm">Edit</a> 
-                        <a href="#" class="delete btn disabled btn-danger btn-sm">Delete</a>';
-                        return $actionBtn;
+                    if($auth_user->can('delete users') && $auth_user->id != $user->id){
+                            $actionBtn .= '<form action="'.route('delete', $user->id).'" method="POST">
+                                                '.csrf_field().'
+                                                '.method_field("DELETE").'
+                                                <input class="btn btn-danger btn-sm" type="submit" value="Delete"
+                                                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+                                                >
+                                            </form>
+                                            ';                       
+                    }
+                    return $actionBtn;
+                    
+
+
+                    // <button type="submit" class="delete btn btn-danger btn-sm"
+                    // onclick="return confirm(\'Are You Sure Want to Delete?\')"
+                    // >Delete</button>
+                    
+                    // $actionBtn = '<a href="#" class="edit btn disabled btn-success btn-sm">Edit</a> 
+                    //     <a href="#" class="delete btn disabled btn-danger btn-sm">Delete</a>';
+                    //     return $actionBtn;
                 })
                 ->addColumn('role', function($user){
                     $current_user = $user->getRoleNames();

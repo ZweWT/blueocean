@@ -5,6 +5,7 @@
 
         <form method="POST" action="{{ route('update', $user->id) }}">
             @csrf
+            @method('PUT')
 
             <!-- Name -->
             <div>

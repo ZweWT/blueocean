@@ -18,9 +18,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/users/list', 'getUsers')->name('users.list');
         Route::get('/register', 'create')->name('register');
         Route::post('/register', 'store');
-        Route::post('/update/{id}', 'update')->name('update');
-        Route::get('/delete/user/{id}', 'destroy');
-        Route::get('/edit/user/{id}', 'edit');
+        Route::put('/update/{id}', 'update')->name('update');
+        Route::delete('/delete/user/{id}', 'destroy')->name('delete');
+        Route::get('/edit/user/{id}', 'edit')->name('edit');
     });
 });
 
